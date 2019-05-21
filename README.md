@@ -1,6 +1,9 @@
 # Pascals Gif
+As if math wasn't scary enough already!
 
-## About
+This project makes 👻spooky👻 gifs by utilizing some interesting patterns that appear in binary representations of pascals triangle
+
+## Prior Art
 This program attempts to remake a gif I found from wikipedia.
 The image can be found at:
 
