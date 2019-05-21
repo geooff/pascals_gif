@@ -7,6 +7,8 @@ This project makes 👻spooky👻 gifs by utilizing some interesting patterns th
 This program attempts to remake a gif I found from wikipedia.
 The image can be found at:
 
+![orig_gif](https://upload.wikimedia.org/wikipedia/commons/6/66/Pascal%27s_Triangle_animated_binary_rows.gif)
+
 https://upload.wikimedia.org/wikipedia/commons/6/66/Pascal%27s_Triangle_animated_binary_rows.gif
 
 The gif came with the following decription:
