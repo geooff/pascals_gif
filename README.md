@@ -21,6 +21,9 @@ It took alot of exparamenting to get close to what the gif shows but the final p
 ## How to Run
 
 ### Step 1. Clone Repo
+```
+https://github.com/geooff/pascals_gif.git
+```
 
 ### Step 2. Make venv
 _Optional but recommended_
