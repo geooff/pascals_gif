@@ -46,7 +46,8 @@ Recommended parameters (160, 0.5)
 python3 pascal_gif.py
 ```
 
-Sample Result
+## Sample Result
+
 ![Result](README_resources/pascals_triangle_160.gif)
 
 The gif generated above used the following metadata:
