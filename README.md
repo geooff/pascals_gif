@@ -45,3 +45,8 @@ Recommended parameters (160, 0.5)
 ```
 python3 pascal_gif.py
 ```
+
+## Limitaions 
+The pixel size of the image must be a power of 10
+* This is due to how I choose to scale the images
+* As a concequence of this I can't remake the original gif identically (It uses a frame of 50x50)
