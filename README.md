@@ -46,6 +46,16 @@ Recommended parameters (160, 0.5)
 python3 pascal_gif.py
 ```
 
+Sample Result
+![Result](README_resources/pascals_triangle_160.gif)
+
+The gif generated above used the following metadata:
+* 100x100 pixel layout
+* Upscales to 400x400
+* 0.5s Frame timing
+* 160 Frames
+
+
 ## Limitaions 
 The dimensions of the frame in pixel of the image must be a power of 10 (10x10, 100x100, ect..)
 * This is due to how I choose to scale the images
