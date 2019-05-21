@@ -22,13 +22,13 @@ It took alot of exparamenting to get close to what the gif shows but the final p
 
 ### Step 1. Clone Repo
 ```
-https://github.com/geooff/pascals_gif.git
+git clone https://github.com/geooff/pascals_gif.git
 ```
 
 ### Step 2. Make venv
 _Optional but recommended_
 ``` 
-cd ~~project_folder~~
+cd pascals_gif
 python3 -m venv .
 source bin/activate
 ```
