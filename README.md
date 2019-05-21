@@ -47,6 +47,8 @@ python3 pascal_gif.py
 ```
 
 ## Limitaions 
-The pixel size of the image must be a power of 10
+The dimensions of the frame in pixel of the image must be a power of 10 (10x10, 100x100, ect..)
 * This is due to how I choose to scale the images
 * As a concequence of this I can't remake the original gif identically (It uses a frame of 50x50)
+
+The edges of gifs generated are blurred, this was originally a bug but I decided I liked it
