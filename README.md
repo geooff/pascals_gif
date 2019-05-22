@@ -41,25 +41,43 @@ pip install -r requirements.txt
 ```
 
 ### Step 4. Run program
-Recommended parameters (160, 0.5)
+Recommended parameters
 ```
-python3 pascal_gif.py
+python3 pascal_gif.py --num_frames 88 --pixel_dim 50 50
 ```
+
+#### Exparamenting
+To run the following parameters are required:
+* num_frames: The total number of frames of the output gif (eg. 120)
+
+Optional Parameters:
+* frame_rate: The speed of the gif. Default: 0.5
+* pixel_dim: Number of pixels contained in frame. Default 50x50
+* frame_dim: Number of pixels contained in output. Default 400x400
+* interpol: Round edges when upscaling frames (extra sp00ky)
 
 ## Sample Result
 
-![Result](README_resources/pascals_triangle_160.gif)
+![Example](README_resources/pascals_triangle_88.gif)
 
 The gif generated above used the following metadata:
-* 100x100 pixel layout
+* 50x50 pixel layout
 * Upscales to 400x400
 * 0.5s Frame timing
-* 160 Frames
+* 88 Frames
 
+![Example_Interpol](README_resources/pascals_triangle_88_interpol.gif)
 
-## Limitaions 
-The dimensions of the frame in pixel of the image must be a power of 10 (10x10, 100x100, ect..)
-* This is due to how I choose to scale the images
-* As a concequence of this I can't remake the original gif identically (It uses a frame of 50x50)
+The gif generated above used the following metadata:
+* 50x50 pixel layout
+* Upscales to 400x400
+* 0.5s Frame timing
+* 88 Frames
+* Interpolate = True
 
-The edges of gifs generated are blurred, this was originally a bug but I decided I liked it
+## Interpolate
+
+The Pillow Image library in python allows for interpolation when upscaling. This can be used to make an interesting effect. To enable this behaviour utalize the flag
+```
+--interpol
+```
