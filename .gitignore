@@ -1,0 +1,6 @@
+# Ignore build files
+*.pyc
+
+# Ignore folders
+/temp/
+/.env/
