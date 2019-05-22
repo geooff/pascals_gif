@@ -11,14 +11,14 @@ The image can be found at:
 
 https://upload.wikimedia.org/wikipedia/commons/6/66/Pascal%27s_Triangle_animated_binary_rows.gif
 
-The gif came with the following decription:
+The gif came with the following description:
 
 ```Each frame represents a row in Pascal's triangle.
 Each column of pixels is a number in binary with the least significant bit at the bottom.
 Light pixels represent ones and the dark pixels are zeroes.
 ```
 
-It took alot of exparamenting to get close to what the gif shows but the final product is close enough for me.
+It took A lot of experimenting to get close to what the gif shows but the final product is close enough for me.
 
 ## How to Run
 
@@ -46,7 +46,7 @@ Recommended parameters
 python3 pascal_gif.py --num_frames 88 --pixel_dim 50 50
 ```
 
-#### Exparamenting
+#### Experimenting
 To run the following parameters are required:
 * num_frames: The total number of frames of the output gif (eg. 120)
 
@@ -77,7 +77,7 @@ The gif generated above used the following metadata:
 
 ## Interpolate
 
-The Pillow Image library in python allows for interpolation when upscaling. This can be used to make an interesting effect. To enable this behaviour utalize the flag
+The Pillow Image library in python allows for interpolation when upscaling. This can be used to make an interesting effect. To enable this behaviour utilize the flag
 ```
 --interpol
 ```
