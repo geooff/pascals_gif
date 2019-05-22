@@ -63,12 +63,16 @@ def gen_frame(row, filename, frame_dim, interpol):
     # If the binary_list exceeds the size of the frame than trim off the edges
     if len(canvis) > (SIZE[0]*SIZE[1]):
         offset = (((len(frame))-(SIZE[0])*SIZE[1]))/2
-        power = int(-log(SIZE[0], 10))
-        canvis = canvis[int(round(offset, power)):]
+
+        # Make sure the offset doesn't cause screen tearing
+        if offset % SIZE[0] != 0:
+            offset += SIZE[0]/2
+
+        canvis = canvis[int(offset):]
 
     # Set image interpolation behaviour based on uer input
     interpol = Image.LANCZOS if interpol else Image.NEAREST
-    
+
     # Pack the frame into a byte and generate an image with it
     data = pack('B'*len(canvis), *[pixel*255 for pixel in canvis])
     img = Image.frombuffer('L', SIZE, data)
@@ -111,16 +115,16 @@ def gen_gif(n_rows, frame_rate, frame_dim, interpol):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser(description='Generate gif using pascals triangle.')
-    parser.add_argument('--num_frames', metavar='frames', type=int, nargs=1,
-                    required=True, help='the total number of frames of the output gif (eg. 120)')
+    parser.add_argument('--num_frames', metavar='frames', type=int, nargs=1, required=True,
+                        help='the total number of frames of the output gif (eg. 120)')
     parser.add_argument('--frame_rate', metavar='frame_rate', type=float, nargs=1, default=0.5,
-                    help='the speed of the gif. Default: 0.5')                    
+                        help='the speed of the gif. Default: 0.5')          
     parser.add_argument('--pixel_dim', metavar=('x', 'y'), type=int, nargs=2, default=(50, 50),
-                    help='number of pixels contained in frame. Default 50x50')
-    parser.add_argument('--frame_dim', metavar=('x', 'y'), type=int, nargs=2, default=(400,400),
-                    help='number of pixels contained in output. Default 400x400')
+                        help='number of pixels contained in frame. Default 50x50')
+    parser.add_argument('--frame_dim', metavar=('x', 'y'), type=int, nargs=2, default=(400, 400),
+                        help='number of pixels contained in output. Default 400x400')
     parser.add_argument('--interpol', dest='interpolate', action='store_true', default=False,
-                    help='round edges when upscaling frames (extra sp00ky).')
+                        help='round edges when upscaling frames (extra sp00ky).')
     args = parser.parse_args()
 
     # Set size of output gif
