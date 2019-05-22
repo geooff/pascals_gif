@@ -8,6 +8,7 @@ Each frame represents a row in Pascal's triangle.
 Each column of pixels is a number in binary with the least significant bit at the bottom.
 Light pixels represent ones and the dark pixels are zeroes.
 """
+import argparse # For fancy user input managment
 import sys
 import shutil
 import os # For system level manipulation
@@ -16,9 +17,6 @@ from PIL import Image # Image manipulation library
 from struct import pack # Pack data for image lib
 from imageio import get_writer, imread # Convery set of images to gif
 from re import search
-
-# Set size of output gif
-SIZE = 100, 100
 
 
 def make_triangle(n_rows):
@@ -40,7 +38,7 @@ def make_triangle(n_rows):
     return results
 
 
-def gen_frame(row, filename):
+def gen_frame(row, filename, frame_dim, interpol):
     """Return an image for a given pascal triangle."""
     frame = []
 
@@ -68,15 +66,18 @@ def gen_frame(row, filename):
         power = int(-log(SIZE[0], 10))
         canvis = canvis[int(round(offset, power)):]
 
+    # Set image interpolation behaviour based on uer input
+    interpol = Image.LANCZOS if interpol else Image.NEAREST
+    
     # Pack the frame into a byte and generate an image with it
     data = pack('B'*len(canvis), *[pixel*255 for pixel in canvis])
     img = Image.frombuffer('L', SIZE, data)
     img = img.rotate(-90)
-    img = img.resize((1024, 1024), Image.LANCZOS)
+    img = img.resize(frame_dim, interpol)
     img.save(filename)
 
 
-def gen_gif(n_rows, f_time):
+def gen_gif(n_rows, frame_rate, frame_dim, interpol):
     """Generate a gif with n_rows number of frames and with frame timing of f_time."""
     triangle = make_triangle(n_rows) # Generate pascals triangle of n_rows
 
@@ -91,10 +92,10 @@ def gen_gif(n_rows, f_time):
 
     # For each row in pascals triangle generate a frame based off it
     for idx, row in enumerate(triangle):
-        gen_frame(row, "frame_{0}.png".format(idx))
+        gen_frame(row, "frame_{0}.png".format(idx), frame_dim, interpol)
 
     # Generate output gif given the files generated above
-    with get_writer('pascals_triangle_{}.gif'.format(n_rows), mode='I', duration=f_time) as writer:
+    with get_writer('pascals_triangle_{}.gif'.format(n_rows), mode='I', duration=frame_rate) as writer:
         filenames = [file for file in os.listdir() if file.endswith('.png')]
 
         # Sort files by numbers found in string containing numbers (ex. frame_6.png)
@@ -109,7 +110,20 @@ def gen_gif(n_rows, f_time):
 
 if __name__ == '__main__':
 
-    n_rows = int(input("Please provide number of frames for gif: "))
-    f_time = float(input("Please provide frame timing for gif: "))
+    parser = argparse.ArgumentParser(description='Generate gif using pascals triangle.')
+    parser.add_argument('--num_frames', metavar='frames', type=int, nargs=1,
+                    required=True, help='the total number of frames of the output gif (eg. 120)')
+    parser.add_argument('--frame_rate', metavar='frame_rate', type=float, nargs=1, default=0.5,
+                    help='the speed of the gif. Default: 0.5')                    
+    parser.add_argument('--pixel_dim', metavar=('x', 'y'), type=int, nargs=2, default=(50, 50),
+                    help='number of pixels contained in frame. Default 50x50')
+    parser.add_argument('--frame_dim', metavar=('x', 'y'), type=int, nargs=2, default=(400,400),
+                    help='number of pixels contained in output. Default 400x400')
+    parser.add_argument('--interpol', dest='interpolate', action='store_true', default=False,
+                    help='round edges when upscaling frames (extra sp00ky).')
+    args = parser.parse_args()
 
-    gen_gif(n_rows, f_time)
+    # Set size of output gif
+    SIZE = args.pixel_dim
+
+    gen_gif(args.num_frames[0], args.frame_rate, args.frame_dim, args.interpolate)
