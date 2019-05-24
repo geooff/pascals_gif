@@ -8,38 +8,49 @@ Each frame represents a row in Pascal's triangle.
 Each column of pixels is a number in binary with the least significant bit at the bottom.
 Light pixels represent ones and the dark pixels are zeroes.
 """
-import argparse # For fancy user input managment
+import argparse  # For fancy user input managment
 import sys
 import shutil
-import os # For system level manipulation
-from math import floor, ceil # Rounding functions for uneven row counts
-from PIL import Image # Image manipulation library
-from struct import pack # Pack data for image lib
-from imageio import get_writer, imread # Convery set of images to gif
+import os  # For system level manipulation
+from math import floor, ceil  # Rounding functions for uneven row counts
+from PIL import Image  # Image manipulation library
+from struct import pack  # Pack data for image lib
+from imageio import get_writer, imread  # Convery set of images to gif
 from re import search
 
 
 def make_triangle(n_rows):
-    """Return pascals triangle in binary with n_rows number of rows."""
+    """Return pascals triangle in binary.
+
+    Keyword arguments:
+    n_rows -- the number of rows in the triangle
+    """
     # Function to add binary numbers
     def bin_add(*args): return bin(sum(int(x, 2) for x in args))[2:]
 
     results = []
     for _ in range(n_rows):
-        row = [bin(1)] # Append a binary 1 to the start of a row
-        if results: # If there are existing results (row > 1)
+        row = [bin(1)]  # Append a binary 1 to the start of a row
+        if results:  # If there are existing results (row > 1)
             last_row = results[-1]
             # The following is just a fancy way to say "For each result in the last row add it with its neighbor"
             # Zip functions collects the previous row with itself and a version indexed one element ahead
             # The bin_add(*pair) unpacks the pair and calls the bin_add function with the results
             row.extend([bin_add(*pair) for pair in zip(last_row, last_row[1:])])
-            row.append(bin(1)) # Append a binary 1 to the end of a row
+            row.append(bin(1))  # Append a binary 1 to the end of a row
         results.append(row)
     return results
 
 
 def gen_frame(row, filename, frame_dim, interpol):
-    """Return an image for a given pascal triangle."""
+    """Return a png image for a given a row of pascals triangle.
+
+    Keyword arguments:
+    row -- a row from pascals triangle
+    filename -- the name to save the image under
+    frame_dim -- the dimensions to resize the frame to
+    interpol -- flag to interpolate the image when upscaleing to frame_dim resolution
+    """
     frame = []
 
     # For each element in a row (represented as binary_strs) unpack it into a list of single 0's and 1's
@@ -82,8 +93,15 @@ def gen_frame(row, filename, frame_dim, interpol):
 
 
 def gen_gif(n_rows, frame_rate, frame_dim, interpol):
-    """Generate a gif with n_rows number of frames and with frame timing of f_time."""
-    triangle = make_triangle(n_rows) # Generate pascals triangle of n_rows
+    """Generate a gif with n_rows number of frames and with frame timing of f_time.
+
+    Keyword arguments:
+    n_rows -- the number of rows in pascals triangle
+    frame_rate -- the frame rate to generate the gif with
+    frame_dim -- the dimensions to resize the frame to
+    interpol -- flag to interpolate the image when upscaleing to frame_dim resolution
+    """
+    triangle = make_triangle(n_rows)  # Generate pascals triangle of n_rows
 
     # Make a temp folder and send all outputs to it
     temp_path = os.path.join(os.getcwd(), r'temp')
