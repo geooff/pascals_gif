@@ -12,7 +12,7 @@ import argparse # For fancy user input managment
 import sys
 import shutil
 import os # For system level manipulation
-from math import floor, ceil, log # Rounding functions for uneven row counts
+from math import floor, ceil # Rounding functions for uneven row counts
 from PIL import Image # Image manipulation library
 from struct import pack # Pack data for image lib
 from imageio import get_writer, imread # Convery set of images to gif
@@ -58,23 +58,23 @@ def gen_frame(row, filename, frame_dim, interpol):
     # If the binary_list doesn't fill the frame than fill the blank space with 0's
     l_append = [0]*(floor((SIZE[0] - len(row))/2))*SIZE[1]
     r_append = [0]*(ceil((SIZE[0] - len(row))/2))*SIZE[1]
-    canvis = l_append+frame+r_append
+    canvas = l_append+frame+r_append
 
     # If the binary_list exceeds the size of the frame than trim off the edges
-    if len(canvis) > (SIZE[0]*SIZE[1]):
+    if len(canvas) > (SIZE[0]*SIZE[1]):
         offset = (((len(frame))-(SIZE[0])*SIZE[1]))/2
 
         # Make sure the offset doesn't cause screen tearing
         if offset % SIZE[0] != 0:
             offset += SIZE[0]/2
 
-        canvis = canvis[int(offset):]
+        canvas = canvas[int(offset):]
 
-    # Set image interpolation behaviour based on uer input
+    # Set image interpolation behaviour based on user input
     interpol = Image.LANCZOS if interpol else Image.NEAREST
 
     # Pack the frame into a byte and generate an image with it
-    data = pack('B'*len(canvis), *[pixel*255 for pixel in canvis])
+    data = pack('B'*len(canvas), *[pixel*255 for pixel in canvas])
     img = Image.frombuffer('L', SIZE, data)
     img = img.rotate(-90)
     img = img.resize(frame_dim, interpol)
@@ -118,7 +118,7 @@ if __name__ == '__main__':
     parser.add_argument('--num_frames', metavar='frames', type=int, nargs=1, required=True,
                         help='the total number of frames of the output gif (eg. 120)')
     parser.add_argument('--frame_rate', metavar='frame_rate', type=float, nargs=1, default=0.5,
-                        help='the speed of the gif. Default: 0.5')          
+                        help='the speed of the gif. Default: 0.5')
     parser.add_argument('--pixel_dim', metavar=('x', 'y'), type=int, nargs=2, default=(50, 50),
                         help='number of pixels contained in frame. Default 50x50')
     parser.add_argument('--frame_dim', metavar=('x', 'y'), type=int, nargs=2, default=(400, 400),
