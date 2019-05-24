@@ -3,4 +3,5 @@
 
 # Ignore folders
 /temp/
+/blog
 /.env/
